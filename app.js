@@ -2,7 +2,7 @@
 
 /*-------------------------------- Variables --------------------------------*/
 let currentInput = '';
-let previousInput = '';
+// let previousInput = '';
 let operator = null;
 let firstOperand = null;
 /*------------------------ Cached Element References ------------------------*/
@@ -15,23 +15,28 @@ buttons.forEach(button => {
   });
 /*-------------------------------- Functions --------------------------------*/
 function handleButtonClick(value) {  
-    if (!isNaN(value)) {  
-        currentInput += value;  
-    }  
-    else if (value === "=") {  
-      if (operator === "+") {  
-        currentInput = String(firstOperand + Number(currentInput));  
-      }  
-      else if (operator === "-") {  
-        currentInput = String(firstOperand - Number(currentInput));  
-      }  
-      operator = "";  
-    }  
-    else {  
-      firstOperand = Number(currentInput);  
-      operator = value;  
-      currentInput = "";  
-    }  
-  
-    display.innerText = currentInput || "0";  
+  if (!isNaN(value)) {  
+      currentInput += value;  
+      display.innerText = currentInput;  
   }  
+  else if (value === "=") {  
+      if (operator && firstOperand !== null) {  
+          if (operator === "+") {  
+              currentInput = String(firstOperand + Number(currentInput));  
+          }  
+          else if (operator === "-") {  
+              currentInput = String(firstOperand - Number(currentInput));  
+          }  
+          display.innerText = currentInput;
+          firstOperand = null;
+          operator = null;
+      }  
+  }  
+  else {  
+      if (currentInput !== "") {  
+          firstOperand = Number(currentInput);  
+          operator = value;  
+          currentInput = "";  
+      }
+  }  
+}  
