@@ -1,42 +1,53 @@
-/*-------------------------------- Constants --------------------------------*/
-
 /*-------------------------------- Variables --------------------------------*/
 let currentInput = '';
-// let previousInput = '';
+let previousInput = '';
 let operator = null;
 let firstOperand = null;
+
 /*------------------------ Cached Element References ------------------------*/
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.button');
 
 /*----------------------------- Event Listeners -----------------------------*/
-buttons.forEach(button => {
-    button.addEventListener("click", () => handleButtonClick(button.innerText));
-  });
-/*-------------------------------- Functions --------------------------------*/
+for (let i = 0; i < buttons.length; i++) {  
+    buttons[i].addEventListener('click', function() {  
+        handleButtonClick(buttons[i].innerText);  
+    });  
+}
+
 function handleButtonClick(value) {  
-  if (!isNaN(value)) {  
-      currentInput += value;  
-      display.innerText = currentInput;  
-  }  
-  else if (value === "=") {  
-      if (operator && firstOperand !== null) {  
-          if (operator === "+") {  
-              currentInput = String(firstOperand + Number(currentInput));  
-          }  
-          else if (operator === "-") {  
-              currentInput = String(firstOperand - Number(currentInput));  
-          }  
-          display.innerText = currentInput;
-          firstOperand = null;
-          operator = null;
-      }  
-  }  
-  else {  
-      if (currentInput !== "") {  
-          firstOperand = Number(currentInput);  
-          operator = value;  
-          currentInput = "";  
-      }
-  }  
-}  
+    console.log("Button Clicked:", value);
+
+    if (!isNaN(value)) {  
+        currentInput += value;  
+        console.log("Current Input:", currentInput);
+    }  
+    else if (value === "=") {  
+        console.log("First Operand:", firstOperand, "Operator:", operator, "Current Input:", currentInput);
+        
+        if (operator === "+") {  
+            currentInput = String(firstOperand + Number(currentInput));  
+        }  
+        else if (operator === "-") {  
+            currentInput = String(firstOperand - Number(currentInput));  
+        }
+        else if (operator === "*") {  
+            currentInput = String(firstOperand * Number(currentInput));  
+        }  
+        else if (operator === "/") {  
+            currentInput = String(firstOperand / Number(currentInput));  
+        } 
+        
+        console.log("Result:", currentInput);
+        operator = null;  
+    }  
+    else {  
+        console.log("Operator Set:", value, "First Operand:", currentInput);  
+        firstOperand = Number(currentInput);  
+        operator = value;  
+        currentInput = "";  
+    }  
+
+    console.log("Display Updated:", currentInput || "0");
+    display.innerText = currentInput || "0";  
+}
